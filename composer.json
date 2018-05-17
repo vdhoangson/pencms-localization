@@ -22,7 +22,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "vdhoangson\\Localization\\LocalizationServiceProvider"
+                "vdhoangson\\Localization\\Providers\\LocalizationServiceProvider"
             ],
             "aliases": {
                 "Localization": "vdhoangson\\Localization\\Facades\\Localization"
