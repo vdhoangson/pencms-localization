@@ -22,6 +22,7 @@ class LocalizationServiceProvider extends ServiceProvider {
     public function register(){
         $this->publishes([
             realpath(__DIR__.'/../../config/localization.php') => config_path('localization.php'),
+            realpath(__DIR__.'/../../database/create_language_table.php') => database_path('create_language_table.php'),
         ]);
 
         $this->app->singleton('Localization', function(){
