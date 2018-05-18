@@ -4,8 +4,7 @@ namespace vdhoangson\Localization\Providers;
 use Illuminate\Support\ServiceProvider;
 use vdhoangson\Localization\Localization;
 use \Illuminate\Foundation\AliasLoader;
-use vdhoangson\Localization\Middlewares\Localization as LocalizationMiddleware;
-use \vdhoangson\Localization\Facades\Localization as LocalizationFacade;
+use vdhoangson\Localization\Middlewares\LocalizationMiddleware;
 
 class LocalizationServiceProvider extends ServiceProvider {
     /**
@@ -16,12 +15,11 @@ class LocalizationServiceProvider extends ServiceProvider {
     protected $defer = false;
 
     public function boot(){
-        $this->app['router']->aliasMiddleware('LocalizationMiddleware', LocalizationMiddleware::class);
+        $this->app['router']->aliasMiddleware('localization', LocalizationMiddleware::class);
     }
     
     public function register(){
         $this->publishes([
-            realpath(__DIR__.'/../../config/localization.php') => config_path('localization.php'),
             realpath(__DIR__.'/../../database/create_language_table.php') => database_path('create_language_table.php'),
         ]);
 
