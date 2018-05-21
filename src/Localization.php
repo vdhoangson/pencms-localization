@@ -116,6 +116,8 @@ class Localization {
         $results = $this->cache->rememberForever('languages', function(){
             return DB::table('language')->get();
         }); 
+
+        return $results;
     }
 }
 ?>
