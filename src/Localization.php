@@ -2,7 +2,6 @@
 
 namespace vdhoangson\Localization;
 use \DB;
-use \Session;
 
 class Localization {
     /**
@@ -39,17 +38,18 @@ class Localization {
     private $sessionKey = 'locale';
 
     /**
-     * An array that contains all routes that should be translated.
+     * Cache
      *
      * @var array
      */
-    protected $translatedRoutes = [];
+    protected $cache = [];
 
     public function __construct(){
         $this->app = app();
         $this->config = $this->app['config'];
         $this->request = $this->app['request'];
         $this->session = $this->app['session'];
+        $this->cache = $this->app['cache'];
         $this->defaultLocale = config('cms.defaultLocale');
     }
 
@@ -96,17 +96,28 @@ class Localization {
 
     /* Model */
     public function getLanguageByCode($code){
-        $results = DB::table('language')->where('code', $code)->first();
-        if($results){
-          return true;
+        
+        if($this->cache->has('languages')){
+            $results = $this->cache->get('languages');
+        } else {
+            $results = $this->getLanguages();
+        }
+
+        foreach($results as $result){
+            if($result->code === $code){
+                return true;
+            }
         }
 
         return false;
     }
 
     public function getLanguages(){
-        $results = DB::table('language')->get();
-        return $results->toArray();
+        $results = $this->cache->rememberForever('languages', function(){
+            return DB::table('language')->get();
+        }); 
+
+        return $results;
     }
 }
 ?>
