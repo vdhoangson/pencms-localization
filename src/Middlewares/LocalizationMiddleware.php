@@ -28,12 +28,7 @@ class LocalizationMiddleware {
         $defaultLocale = $app->defaultLocale;
 
         $locale = $request->segment(1);
-        $ignore = ['api'];
-
-        if(in_array($locale, $ignore)){
-            return $next($request);
-        }
-        
+       
         if(is_null($locale) || !$app->getLanguageByCode($locale)){
             $segments = $request->segments();
             array_unshift($segments, $this->app->config->get('cms.defaultLocale'));
