@@ -54,14 +54,15 @@ class Localization {
     }
 
     public function setLocale( $locale = null) {
+        
         if($this->session->has($this->sessionKey)){
             $locale = $this->session->get($this->sessionKey);
-        } elseif ( empty( $locale ) || !is_string($locale) ) {
+        } elseif ( (empty( $locale ) || !is_string($locale)) && !is_null($this->request->segment(1))) {
             $locale = $this->request->segment(1);
         } else {
             $locale = $this->getDefaultLocale();
         }
-        
+    
         if ($this->getLanguageByCode($locale)) {
             $this->currentLocale = $locale;
         }
@@ -96,7 +97,6 @@ class Localization {
 
     /* Model */
     public function getLanguageByCode($code){
-        
         if($this->cache->has('languages')){
             $results = $this->cache->get('languages');
         } else {

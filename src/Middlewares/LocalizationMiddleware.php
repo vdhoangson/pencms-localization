@@ -26,7 +26,7 @@ class LocalizationMiddleware {
         
         $currentLocale = $app->currentLocale;
         $defaultLocale = $app->defaultLocale;
-
+        
         $locale = $request->segment(1);
         
         if(is_null($locale) || !$app->getLanguageByCode($locale)){
@@ -34,8 +34,10 @@ class LocalizationMiddleware {
             array_unshift($segments, $this->app->config->get('cms.defaultLocale'));
             
             return $this->redirector->to(implode('/', $segments));
-        } else if($locale !== $currentLocale && $app->getLanguageByCode($locale)){
+        } elseif($app->getLanguageByCode($locale)){
             $app->setLocale($locale);
+        } else{
+            $app->setLocale($this->app->config->get('cms.defaultLocale'));
         }
 
         return $next($request);
