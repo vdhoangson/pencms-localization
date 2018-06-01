@@ -33,6 +33,8 @@ class LocalizationMiddleware {
             $segments = $request->segments();
             array_unshift($segments, $this->app->config->get('cms.defaultLocale'));
             
+            $app->setLocale($this->app->config->get('cms.defaultLocale'));
+
             return $this->redirector->to(implode('/', $segments));
         } elseif($app->getLanguageByCode($locale)){
             $app->setLocale($locale);
